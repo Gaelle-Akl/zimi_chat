@@ -14,15 +14,16 @@ class ChatScreen extends StatelessWidget {
           children: [
             // Header will go here
             Container(
-              height: 80,
+              height: 130,
+              width: double.infinity,
               color: AppColors.primary,
               child: const Center(
                 child: Text(
                   'Delivery Assistant',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
@@ -33,13 +34,17 @@ class ChatScreen extends StatelessWidget {
               child: Center(
                 child: Text(
                   'Hello',
+                  style: TextStyle(
+                    color: AppColors.secondaryText,
+                    fontSize : 16,
+                  )
                 ),
               ),
             ),
 
             // Input bar will go here
             Container(
-              height: 70,
+              height: 20,
               color: Colors.white,
             ),
           ],

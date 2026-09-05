@@ -9,44 +9,36 @@ class AppTheme {
 
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.primary,
+      primary:AppColors.primary,
+      surface: AppColors.surface
     ),
 
+
     appBarTheme: const AppBarTheme(
-      backgroundColor: AppColors.primary,
-      foregroundColor: AppColors.white,
+      backgroundColor: Colors.transparent,
       elevation: 0,
     ),
 
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: AppColors.white,
+      fillColor: AppColors.surface,
 
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
-        borderSide: BorderSide(
-          color: AppColors.border,
-        ),
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide.none,
+
       ),
 
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
-        borderSide: BorderSide(
-          color: AppColors.border,
-        ),
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide.none,
       ),
 
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
-        borderSide: BorderSide(
-          color: AppColors.primary,
-          width: 1.5,
-        ),
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide.none,
+
+    
       ),
     ),
   );
