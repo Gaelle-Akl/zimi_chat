@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../app/theme/app_colors.dart';
+import '../widgets/chat_header.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -13,7 +14,7 @@ class ChatScreen extends StatelessWidget {
         child: Column(
           children: [
             
-             const ChatHeader()
+            const ChatHeader(),
               
             // Chat content will go here
             const Expanded(
