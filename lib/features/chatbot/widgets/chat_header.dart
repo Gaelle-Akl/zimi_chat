@@ -4,7 +4,6 @@ import "../../../app/theme/app_colors.dart";
 class ChatHeader extends StatelessWidget {
     const ChatHeader({super.key});
     @override
-
     Widget build(BuildContext context) {
     return Container(
       height: 145,

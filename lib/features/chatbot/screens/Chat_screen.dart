@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../app/theme/app_colors.dart';
+import '../widgets/chat_header.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -12,23 +13,9 @@ class ChatScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // Header will go here
-            Container(
-              height: 130,
-              width: double.infinity,
-              color: AppColors.primary,
-              child: const Center(
-                child: Text(
-                  'Delivery Assistant',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-
+            
+            const ChatHeader(),
+              
             // Chat content will go here
             const Expanded(
               child: Center(
