@@ -32,36 +32,31 @@ class ChatHeader extends StatelessWidget {
                 size: 21,
               ),
             ),
+          const SizedBox(width: 4),
+        Container(
+            width: 52,
+            height: 52,
 
-            const SizedBox(width: 4),
-
-            Container(
-              width: 52,
-              height: 52,
-
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.25),
-                shape: BoxShape.circle,
-              ),
-
-              child: const Icon(
-                Icons.smart_toy_outlined,
-                color: Colors.white,
-                size: 32,
-              ),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.25),
+              shape: BoxShape.circle,
             ),
 
-            const SizedBox(width: 14),
-
-
-            const Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+            child: const Icon(
+              Icons.smart_toy_outlined,
+              color: Colors.white,
+              size: 32,
+            ),
+        ),
+        const SizedBox(width: 14),
+        const Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
 
                 children: [
                   Text(
-                    'Zimi Assistant',
+                    'Zimi Assistent',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 19,
@@ -70,7 +65,6 @@ class ChatHeader extends StatelessWidget {
                   ),
 
                   SizedBox(height: 5),
-
                   Text(
                     'Your food companion',
                     style: TextStyle(
@@ -78,7 +72,6 @@ class ChatHeader extends StatelessWidget {
                       fontSize: 13,
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -96,14 +89,11 @@ class ChatHeader extends StatelessWidget {
                 color: Colors.white,
                 size: 24,
               ),
+           
             ),
           ],
-
-
         ),
       ),
     );
-  }
-
 
 }
