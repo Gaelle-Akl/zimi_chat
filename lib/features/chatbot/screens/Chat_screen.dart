@@ -12,23 +12,9 @@ class ChatScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // Header will go here
-            Container(
-              height: 130,
-              width: double.infinity,
-              color: AppColors.primary,
-              child: const Center(
-                child: Text(
-                  'Delivery Assistant',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-
+            
+             const ChatHeader()
+              
             // Chat content will go here
             const Expanded(
               child: Center(
