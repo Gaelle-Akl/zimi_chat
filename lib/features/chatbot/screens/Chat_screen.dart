@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../app/theme/app_colors.dart';
 import '../widgets/chat_header.dart';
-import '../widgets/chat_message.dart';
-import '../widgets/chat_message_model.dart';
+import '../models/chat_message.dart';
+import '../models/chat_message_model.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
   @override
@@ -53,16 +53,14 @@ class _ChatScreenState extends State<ChatScreen> {
                   bottom:20,
                 ),
                 
-                itemCount:messages.length,
+                itemCount: messages.length,
 
-                itemBuilder: (context,index),
+                itemBuilder: (context, index) {
                   return ChatMessage(
-                    message:messages[index],
-                  )
-                 
-                ),
-            ),
-          ],
+                    message: messages[index],
+                  );
+                },
+              ),
             ),
 
             // Input bar will go here
@@ -70,9 +68,9 @@ class _ChatScreenState extends State<ChatScreen> {
               height: 20,
               color: Colors.white,
             ),
-    
+          ],
         ),
       ),
-    
+    );
   }
 }
