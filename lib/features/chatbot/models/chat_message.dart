@@ -50,7 +50,7 @@ class ChatMessage extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isUser
                         ? AppColors.userBubble
-                        : AppColors.botBubble,
+                      : AppColors.aiBubble,
 
                     borderRadius: BorderRadius.only(
                       topLeft: const Radius.circular(18),
@@ -80,7 +80,7 @@ class ChatMessage extends StatelessWidget {
                     style: TextStyle(
                       color: isUser
                           ? Colors.white
-                          : AppColors.textPrimary,
+                          : AppColors.text,
 
                       fontSize: 15,
                       height: 1.4,
