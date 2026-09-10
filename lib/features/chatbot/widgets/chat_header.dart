@@ -95,5 +95,5 @@ class ChatHeader extends StatelessWidget {
         ),
       ),
     );
-
 }
+  }
