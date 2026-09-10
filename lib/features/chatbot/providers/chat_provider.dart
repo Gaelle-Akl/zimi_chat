@@ -22,6 +22,12 @@ class ChatProvider with ChangeNotifier {
   List<ChatMessage> get messages => _messages;
   bool get isLoading => _isLoading;
 
+  // Clear messages method placed properly as a class method
+  void clearMessages() {
+    _messages.clear();
+    notifyListeners();
+  }
+
   void sendMessage(String text, UserPreferencesProvider userPrefs) async {
     if (text.trim().isEmpty) return;
 
@@ -41,7 +47,9 @@ class ChatProvider with ChangeNotifier {
       detectedCategory = 'pizza';
     } else if (lowerText.contains('burger')) {
       detectedCategory = 'burger';
-    } else if (lowerText.contains('ice cream') || lowerText.contains('icecream') || lowerText.contains('dessert')) {
+    } else if (lowerText.contains('ice cream') ||
+        lowerText.contains('icecream') ||
+        lowerText.contains('dessert')) {
       detectedCategory = 'ice cream';
     }
 
@@ -68,7 +76,8 @@ class ChatProvider with ChangeNotifier {
 
         _messages.add(
           ChatMessage(
-            text: 'Here are top Lebanese places for $detectedCategory$filterNotice:',
+            text:
+            'Here are top Lebanese places for $detectedCategory$filterNotice:',
             isUser: false,
             recommendedRestaurants: filteredList,
           ),
@@ -76,7 +85,8 @@ class ChatProvider with ChangeNotifier {
       } else {
         _messages.add(
           ChatMessage(
-            text: 'Sorry, I couldn\'t find any $detectedCategory places matching your active dietary preferences!',
+            text:
+            'Sorry, I couldn\'t find any $detectedCategory places matching your active dietary preferences!',
             isUser: false,
           ),
         );
@@ -84,7 +94,8 @@ class ChatProvider with ChangeNotifier {
     } else {
       _messages.add(
         ChatMessage(
-          text: 'I can help you find Lebanese spots! Try asking for "pizza", "burgers", or "ice cream".',
+          text:
+          'I can help you find Lebanese spots! Try asking for "pizza", "burgers", or "ice cream".',
           isUser: false,
         ),
       );

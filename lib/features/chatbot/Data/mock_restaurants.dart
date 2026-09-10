@@ -7,7 +7,7 @@ final List<Restaurant> mockRestaurants = [
     name: 'Tavolina',
     rating: 4.7,
     category: 'pizza',
-    imageUrl: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500',
+    imageUrl: 'https://images.pexels.com/photos/315755/pexels-photo-315755.jpeg?auto=compress&cs=tinysrgb&w=500',
     menu: [
       MenuItem(
         id: 'tav_1',
@@ -37,7 +37,7 @@ final List<Restaurant> mockRestaurants = [
     name: 'Appetito Trattoria',
     rating: 4.6,
     category: 'pizza',
-    imageUrl: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500',
+    imageUrl: 'https://images.pexels.com/photos/1146760/pexels-photo-1146760.jpeg?auto=compress&cs=tinysrgb&w=500',
     menu: [
       MenuItem(
         id: 'app_1',
@@ -69,7 +69,7 @@ final List<Restaurant> mockRestaurants = [
     name: 'Classic Burger Joint',
     rating: 4.5,
     category: 'burger',
-    imageUrl: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500',
+    imageUrl: 'https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=500',
     menu: [
       MenuItem(
         id: 'cbj_1',
@@ -99,7 +99,7 @@ final List<Restaurant> mockRestaurants = [
     name: 'Husky Burger',
     rating: 4.8,
     category: 'burger',
-    imageUrl: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500',
+    imageUrl: 'https://images.pexels.com/photos/1199957/pexels-photo-1199957.jpeg?auto=compress&cs=tinysrgb&w=500',
     menu: [
       MenuItem(
         id: 'hsk_1',
@@ -131,7 +131,7 @@ final List<Restaurant> mockRestaurants = [
     name: 'Oslo Ice Cream',
     rating: 4.9,
     category: 'ice cream',
-    imageUrl: 'https://images.unsplash.com/photo-1567206563064-6f60f4078b57?w=500',
+    imageUrl: 'https://images.pexels.com/photos/1362534/pexels-photo-1362534.jpeg?auto=compress&cs=tinysrgb&w=500',
     menu: [
       MenuItem(
         id: 'oslo_1',
@@ -161,7 +161,7 @@ final List<Restaurant> mockRestaurants = [
     name: 'Bachir Ice Cream',
     rating: 4.7,
     category: 'ice cream',
-    imageUrl: 'https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=500',
+    imageUrl: 'https://images.pexels.com/photos/1352278/pexels-photo-1352278.jpeg?auto=compress&cs=tinysrgb&w=500',
     menu: [
       MenuItem(
         id: 'bach_1',
