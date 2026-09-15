@@ -4,6 +4,9 @@ import '../widgets/chat_header.dart';
 import '../models/chat_message.dart';
 import '../models/chat_message_model.dart';
 
+
+import '../widgets/delivery_status_card.dart';
+
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
@@ -46,20 +49,21 @@ class _ChatScreenState extends State<ChatScreen> {
             const ChatHeader(),
               
             // Chat content will go here
-            Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.only(
-                  top: 18,
-                  bottom:20,
-                ),
-                
-                itemCount: messages.length,
+              const Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 12),
 
-                itemBuilder: (context, index) {
-                  return ChatMessage(
-                    message: messages[index],
-                  );
-                },
+                    DeliveryStatusCard(
+                      status: 'On route',
+                      arrivalTime: '12:30 – 1:00 PM',
+                      orderNumber: '#ZIM-48291',
+                    ),
+
+                    // Your messages will go here
+                  ],
+                ),
               ),
             ),
 
