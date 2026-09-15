@@ -16,7 +16,7 @@ class QuantitySelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 38,
+      height: 34,
       decoration: BoxDecoration(
         color: AppColors.primaryLight,
         borderRadius: BorderRadius.circular(12),
@@ -69,8 +69,8 @@ class _QuantityButton extends StatelessWidget {
       onPressed: onPressed,
       padding: EdgeInsets.zero,
       constraints: const BoxConstraints(
-        minWidth: 34,
-        minHeight: 34,
+        minWidth: 30,
+        minHeight: 30,
       ),
       icon: Icon(
         icon,
