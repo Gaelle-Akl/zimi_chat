@@ -40,7 +40,7 @@ class UserMessageBubble extends StatelessWidget {
             child: Text(
               message,
               style: const TextStyle(
-                color: AppColors.white,
+                color: Colors.white,
                 fontSize: 15,
                 height: 1.4,
               ),
