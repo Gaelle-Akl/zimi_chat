@@ -36,7 +36,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: Colors.white,
         border: Border.all(
           color: AppColors.border,
         ),
@@ -79,7 +79,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
                 Icons.arrow_upward,
                 size: 20,
               ),
-              color: AppColors.white,
+              color: Colors.white,
               tooltip: 'Send',
             ),
           ),

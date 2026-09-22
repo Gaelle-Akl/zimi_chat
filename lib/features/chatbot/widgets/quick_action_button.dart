@@ -35,7 +35,7 @@ class QuickActionButton extends StatelessWidget {
           ),
         ),
         style: OutlinedButton.styleFrom(
-          backgroundColor: AppColors.white,
+          backgroundColor: Colors.white,
           side: const BorderSide(
             color: AppColors.border,
             width: 1,
