@@ -1,64 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../app/theme/app_colors.dart';
 import '../providers/cart_provider.dart';
-import 'quantity_selector.dart';
 
 class CartBottomSheet extends StatelessWidget {
   const CartBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cartProvider = context.watch<CartProvider>();
+    final cart = Provider.of<CartProvider>(context);
 
     return Container(
-      padding: const EdgeInsets.all(20),
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.7,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
+      padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Container(
+            width: 40,
+            height: 4,
+            margin: const EdgeInsets.only(bottom: 20),
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Your Selection',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                'Your Cart',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              if (cart.cartItemsList.isNotEmpty)
+                TextButton(
+                  onPressed: () => cart.clearCart(),
+                  child: const Text(
+                    'Clear All',
+                    style: TextStyle(color: Color(0xFFFF5252)),
+                  ),
                 ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () => Navigator.pop(context),
-              ),
             ],
           ),
-          const Divider(),
-          if (cartProvider.items.isEmpty)
+          const SizedBox(height: 12),
+          if (cart.cartItemsList.isEmpty)
             const Padding(
-              padding: EdgeInsets.symmetric(vertical: 32.0),
-              child: Center(
-                child: Text(
-                  'Your list is empty',
-                  style: TextStyle(color: AppColors.secondaryText),
-                ),
+              padding: EdgeInsets.symmetric(vertical: 30),
+              child: Text(
+                'Your cart is empty',
+                style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
             )
           else
-            Expanded(
+            Flexible(
               child: ListView.builder(
-                itemCount: cartProvider.items.length,
+                shrinkWrap: true,
+                itemCount: cart.cartItemsList.length,
                 itemBuilder: (context, index) {
-                  // menuItem is directly a MenuItem object
-                  final menuItem = cartProvider.items[index];
-                  // Get quantity directly from cartProvider using the item ID
-                  final quantity = cartProvider.getQuantity(menuItem.id);
-
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  final item = cart.cartItemsList[index];
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF8FAFC),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -67,26 +75,43 @@ class CartBottomSheet extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                menuItem.name,
+                                item.name,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+                                  fontSize: 15,
                                 ),
                               ),
+                              const SizedBox(height: 4),
                               Text(
-                                '\$${menuItem.price.toStringAsFixed(2)} each',
-                                style: const TextStyle(
-                                  color: AppColors.secondaryText,
-                                  fontSize: 12,
+                                '\$${(item.price * item.quantity).toStringAsFixed(2)}',
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 13,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        QuantitySelector(
-                          quantity: quantity,
-                          onAdd: () => cartProvider.addItem(menuItem),
-                          onRemove: () => cartProvider.removeItem(menuItem.id),
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.remove_circle_outline),
+                              color: const Color(0xFFFF5252),
+                              onPressed: () => cart.removeItem(item.id),
+                            ),
+                            Text(
+                              '${item.quantity}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.add_circle_outline),
+                              color: const Color(0xFFFF5252),
+                              onPressed: () => cart.addItem(item),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -94,25 +119,51 @@ class CartBottomSheet extends StatelessWidget {
                 },
               ),
             ),
-          const Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Total Price',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                '\$${cartProvider.totalPrice.toStringAsFixed(2)}',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primary,
+          const SizedBox(height: 16),
+          if (cart.cartItemsList.isNotEmpty)
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {
+                  cart.placeOrder();
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Order placed successfully! You can now track it in chat.'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFFF5252),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Place Order',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      '\$${cart.totalPrice.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-          const SizedBox(height: 16),
+            ),
         ],
       ),
     );

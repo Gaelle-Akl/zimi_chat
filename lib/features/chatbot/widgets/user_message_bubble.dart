@@ -1,59 +1,52 @@
 import 'package:flutter/material.dart';
-import '../../../app/theme/app_colors.dart';
 
 class UserMessageBubble extends StatelessWidget {
   final String message;
-  final String time;
+  final DateTime? timestamp;
 
   const UserMessageBubble({
     super.key,
     required this.message,
-    required this.time,
+    this.timestamp,
   });
+
+  String _formatTime(DateTime time) {
+    final hour = time.hour == 0 ? 12 : (time.hour > 12 ? time.hour - 12 : time.hour);
+    final minute = time.minute.toString().padLeft(2, '0');
+    final period = time.hour >= 12 ? 'PM' : 'AM';
+    return '$hour:$minute $period';
+  }
 
   @override
   Widget build(BuildContext context) {
+    final timeStr = _formatTime(timestamp ?? DateTime.now());
+
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 70,
-        right: 24,
-        top: 8,
-        bottom: 8,
-      ),
+      padding: const EdgeInsets.only(bottom: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 13,
-            ),
-            decoration: const BoxDecoration(
-              color: AppColors.userBubble,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(18),
-                topRight: Radius.circular(18),
-                bottomLeft: Radius.circular(18),
-                bottomRight: Radius.circular(5),
-              ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFF5252),
+              borderRadius: BorderRadius.circular(18),
             ),
             child: Text(
               message,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 15,
-                height: 1.4,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),
-
           const SizedBox(height: 4),
-
           Text(
-            time,
-            style: const TextStyle(
-              color: AppColors.secondaryText,
-              fontSize: 10,
+            timeStr,
+            style: TextStyle(
+              color: Colors.grey[500],
+              fontSize: 11,
             ),
           ),
         ],

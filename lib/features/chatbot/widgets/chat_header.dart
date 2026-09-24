@@ -1,99 +1,91 @@
 import 'package:flutter/material.dart';
-import "../../../app/theme/app_colors.dart";
+import 'package:provider/provider.dart';
+import '../providers/chat_provider.dart';
+import '../providers/cart_provider.dart';
 
 class ChatHeader extends StatelessWidget {
-    const ChatHeader({super.key});
-    @override
-    Widget build(BuildContext context) {
+  const ChatHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final chatProvider = Provider.of<ChatProvider>(context, listen: false);
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+
     return Container(
-      height: 145,
-      width: double.infinity,
-
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
       decoration: const BoxDecoration(
-        color: AppColors.primary,
-
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(55),
-          bottomRight: Radius.circular(55),
+        color: Color(0xFFFF5252),
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(32),
         ),
       ),
-
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 18,
-        ),
-        child: Row(
-          children: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
-                color: Colors.white,
-                size: 21,
-              ),
-            ),
-          const SizedBox(width: 4),
-        Container(
-            width: 52,
-            height: 52,
-
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.25),
+      child: Row(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+            onPressed: () => Navigator.maybePop(context),
+          ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: const BoxDecoration(
+              color: Colors.white24,
               shape: BoxShape.circle,
             ),
-
-            child: const Icon(
-              Icons.smart_toy_outlined,
-              color: Colors.white,
-              size: 32,
-            ),
-        ),
-        const SizedBox(width: 14),
-        const Expanded(
+            child: const Icon(Icons.smart_toy_outlined, color: Colors.white, size: 24),
+          ),
+          const SizedBox(width: 12),
+          const Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
-
-                children: [
-                  Text(
-                    'Zimi Assistent',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 19,
-                      fontWeight: FontWeight.w700,
-                    ),
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Zimi Assistant',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
-
-                  SizedBox(height: 5),
-                  Text(
-                    'Your food companion',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 13,
-                    ),
+                ),
+                Text(
+                  'Your food companion',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 12,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Container(
-              width: 42,
-              height: 42,
-
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.22),
+          ),
+          PopupMenuButton<String>(
+            icon: Container(
+              padding: const EdgeInsets.all(6),
+              decoration: const BoxDecoration(
+                color: Colors.white24,
                 shape: BoxShape.circle,
               ),
-
-              child: const Icon(
-                Icons.more_horiz,
-                color: Colors.white,
-                size: 24,
-              ),
-           
+              child: const Icon(Icons.more_horiz, color: Colors.white, size: 20),
             ),
-          ],
-        ),
+            onSelected: (value) {
+              if (value == 'refresh') {
+                chatProvider.clearMessages(cartProvider);
+              }
+            },
+            itemBuilder: (BuildContext context) => [
+              const PopupMenuItem<String>(
+                value: 'refresh',
+                child: Row(
+                  children: [
+                    Icon(Icons.refresh, color: Color(0xFFFF5252), size: 20),
+                    SizedBox(width: 8),
+                    Text('Refresh Chat'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
-}
   }
+}

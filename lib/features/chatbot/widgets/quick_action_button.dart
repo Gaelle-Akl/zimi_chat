@@ -1,53 +1,116 @@
 import 'package:flutter/material.dart';
-import '../../../app/theme/app_colors.dart';
 
-class QuickActionButton extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final VoidCallback onPressed;
+class QuickActions extends StatelessWidget {
+  final VoidCallback onFindFood;
+  final VoidCallback onTrackOrder;
+  final VoidCallback onPopular;
+  final VoidCallback onDeals;
+  final VoidCallback onHelp;
 
-  const QuickActionButton({
+  const QuickActions({
     super.key,
-    required this.icon,
-    required this.label,
-    required this.onPressed,
+    required this.onFindFood,
+    required this.onTrackOrder,
+    required this.onPopular,
+    required this.onDeals,
+    required this.onHelp,
   });
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48,
-      child: OutlinedButton.icon(
-        onPressed: onPressed,
-        icon: Icon(
-          icon,
-          size: 19,
-          color: AppColors.primary,
-        ),
-        label: Text(
-          label,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-            color: AppColors.text,
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
+  Widget _buildOutlinedButton({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: const Color(0xFFE2E8F0), width: 1.2),
           ),
-        ),
-        style: OutlinedButton.styleFrom(
-          backgroundColor: Colors.white,
-          side: const BorderSide(
-            color: AppColors.border,
-            width: 1,
-          ),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 18, color: const Color(0xFFFF5252)),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  label,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: Color(0xFF2D3748),
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
           ),
         ),
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: _buildOutlinedButton(
+                icon: Icons.restaurant,
+                label: 'Find food',
+                onTap: onFindFood,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _buildOutlinedButton(
+                icon: Icons.location_on_outlined,
+                label: 'Track order',
+                onTap: onTrackOrder,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: _buildOutlinedButton(
+                icon: Icons.local_fire_department_outlined,
+                label: 'Popular near me',
+                onTap: onPopular,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _buildOutlinedButton(
+                icon: Icons.local_offer_outlined,
+                label: 'Deals & offers',
+                onTap: onDeals,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.42,
+          child: _buildOutlinedButton(
+            icon: Icons.help_outline,
+            label: 'Need help',
+            onTap: onHelp,
+          ),
+        ),
+      ],
     );
   }
 }

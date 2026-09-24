@@ -1,35 +1,37 @@
 import 'package:flutter/material.dart';
-
-import '../../../app/theme/app_colors.dart';
-import 'quantity_selector.dart';
+import 'package:provider/provider.dart';
+import '../models/restaurant_model.dart';
+import '../providers/cart_provider.dart';
 
 class FoodRecommendationCard extends StatelessWidget {
-  final String foodName;
+  final MenuItem item;
   final String restaurantName;
-  final double rating;
-  final String deliveryTime;
-  final String price;
-  final String? imageUrl;
-
-  final int quantity;
-
-  final VoidCallback onView;
-  final VoidCallback onAdd;
-  final VoidCallback onRemove;
 
   const FoodRecommendationCard({
     super.key,
-    required this.foodName,
+    required this.item,
     required this.restaurantName,
-    required this.rating,
-    required this.deliveryTime,
-    required this.price,
-    this.imageUrl,
-    required this.quantity,
-    required this.onView,
-    required this.onAdd,
-    required this.onRemove,
   });
+
+  String _getItemImageUrl() {
+    if (item.imageUrl != null && item.imageUrl!.isNotEmpty) {
+      return item.imageUrl!;
+    }
+
+    // Dynamic image lookup based on food type
+    final nameLower = item.name.toLowerCase();
+    if (nameLower.contains('burger')) {
+      return 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300';
+    } else if (nameLower.contains('pizza')) {
+      return 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=300';
+    } else if (nameLower.contains('sushi') || nameLower.contains('roll')) {
+      return 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=300';
+    } else if (nameLower.contains('pad thai') || nameLower.contains('curry') || nameLower.contains('soup')) {
+      return 'https://images.unsplash.com/photo-1559314809-0d155014e29e?w=300';
+    }
+
+    return 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,283 +39,122 @@ class FoodRecommendationCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        // Change from: color: AppColors.white,
         color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: AppColors.border,
-        ),
-        boxShadow: [
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.black12,
+            blurRadius: 4,
+            offset: Offset(0, 2),
           ),
         ],
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
-          _FoodImage(
-            imageUrl: imageUrl,
+          // Item Image
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.network(
+              _getItemImageUrl(),
+              width: 70,
+              height: 70,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(
+                width: 70,
+                height: 70,
+                color: const Color(0xFFF7FAFC),
+                child: const Icon(Icons.fastfood, color: Color(0xFFFF5252)),
+              ),
+            ),
           ),
-
           const SizedBox(width: 12),
 
-
+          // Item Details
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  foodName,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                  item.name,
                   style: const TextStyle(
-                    color: AppColors.text,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: Color(0xFF2D3748),
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-
-                const SizedBox(height: 5),
-
-
+                const SizedBox(height: 4),
                 Row(
                   children: [
-                    const Icon(
-                      Icons.star_rounded,
-                      color: AppColors.warning,
-                      size: 16,
-                    ),
-
-                    const SizedBox(width: 3),
-
-                    Text(
-                      rating.toStringAsFixed(1),
-                      style: const TextStyle(
-                        color: AppColors.secondaryText,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-
-                    const Text(
-                      '  ·  ',
-                      style: TextStyle(
-                        color: AppColors.secondaryText,
-                        fontSize: 12,
-                      ),
-                    ),
-
-                    Text(
-                      deliveryTime,
-                      style: const TextStyle(
-                        color: AppColors.secondaryText,
-                        fontSize: 12,
-                      ),
-                    ),
-
-                    const Text(
-                      '  ·  ',
-                      style: TextStyle(
-                        color: AppColors.secondaryText,
-                        fontSize: 12,
-                      ),
-                    ),
-
-                    Text(
-                      price,
-                      style: const TextStyle(
-                        color: AppColors.secondaryText,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 5),
-
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.restaurant_rounded,
-                      color: AppColors.primary,
-                      size: 14,
-                    ),
-
+                    const Icon(Icons.star, size: 14, color: Colors.amber),
                     const SizedBox(width: 4),
-
-                    Expanded(
-                      child: Text(
-                        restaurantName,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: AppColors.secondaryText,
-                          fontSize: 11,
-                        ),
+                    const Text(
+                      '4.7',
+                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    ),
+                    const Text(
+                      ' · 20-30 min · ',
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                    Text(
+                      '\$${item.price.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF2D3748),
                       ),
                     ),
                   ],
                 ),
-
-                const SizedBox(height: 9),
-
-
+                const SizedBox(height: 4),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    _ViewButton(
-                      onPressed: onView,
+                    const Icon(Icons.restaurant, size: 12, color: Color(0xFFFF5252)),
+                    const SizedBox(width: 4),
+                    Text(
+                      restaurantName,
+                      style: const TextStyle(fontSize: 11, color: Colors.grey),
                     ),
-
-                    const SizedBox(width: 7),
-
-                    if (quantity == 0)
-                      _AddButton(
-                        onPressed: onAdd,
-                      )
-                    else
-                      QuantitySelector(
-                        quantity: quantity,
-                        onAdd: onAdd,
-                        onRemove: onRemove,
-                      ),
                   ],
                 ),
               ],
             ),
           ),
+
+          // Action Button (+ Add)
+          ElevatedButton.icon(
+            onPressed: () {
+              final cartProvider = Provider.of<CartProvider>(context, listen: false);
+              cartProvider.addItem(item);
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('${item.name} added to cart!'),
+                  duration: const Duration(seconds: 2),
+                  backgroundColor: const Color(0xFFFF5252),
+                ),
+              );
+            },
+            icon: const Icon(Icons.add, size: 16, color: Colors.white),
+            label: const Text(
+              'Add',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+                color: Colors.white,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFFF5252),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+            ),
+          ),
         ],
-      ),
-    );
-  }
-}
-
-
-//Food Image
-
-
-class _FoodImage extends StatelessWidget {
-  final String? imageUrl;
-
-  const _FoodImage({
-    this.imageUrl,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(14),
-      child: SizedBox(
-        width: 88,
-        height: 88,
-        child: imageUrl != null && imageUrl!.isNotEmpty
-            ? Image.network(
-          imageUrl!,
-          fit: BoxFit.cover,
-          errorBuilder: (_, __, _) {
-            return _placeholder();
-          },
-        )
-            : _placeholder(),
-      ),
-    );
-  }
-
-  Widget _placeholder() {
-    return Container(
-      color: AppColors.primaryLight,
-      child: const Icon(
-        Icons.fastfood_rounded,
-        color: AppColors.primary,
-        size: 30,
-      ),
-    );
-  }
-}
-
-
-// View Button
-
-
-class _ViewButton extends StatelessWidget {
-  final VoidCallback onPressed;
-
-  const _ViewButton({
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 34,
-      child: TextButton(
-        onPressed: onPressed,
-        style: TextButton.styleFrom(
-          backgroundColor: AppColors.primaryLight,
-          foregroundColor: AppColors.primary,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 13,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        child: const Text(
-          'View',
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// Add Button
-
-
-class _AddButton extends StatelessWidget {
-  final VoidCallback onPressed;
-
-  const _AddButton({
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 34,
-      child: ElevatedButton.icon(
-        onPressed: onPressed,
-        icon: const Icon(
-          Icons.add,
-          size: 16,
-        ),
-        label: const Text(
-          'Add',
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          // Change from: foregroundColor: AppColors.white,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
       ),
     );
   }

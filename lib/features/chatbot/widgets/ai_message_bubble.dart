@@ -1,94 +1,152 @@
 import 'package:flutter/material.dart';
-import '../../../app/theme/app_colors.dart';
+import 'package:provider/provider.dart';
+import '../models/chat_message_model.dart';
+import '../providers/cart_provider.dart';
 
 class AiMessageBubble extends StatelessWidget {
-  final String message;
-  final String time;
+  final ChatMessageModel message;
 
-  const AiMessageBubble({
-    super.key,
-    required this.message,
-    required this.time,
-  });
+  const AiMessageBubble({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
+    final cart = Provider.of<CartProvider>(context);
+
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 24,
-        right: 70,
-        top: 8,
-        bottom: 8,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: AppColors.primaryLight,
-              shape: BoxShape.circle,
+            padding: const EdgeInsets.all(14),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+                bottomLeft: Radius.circular(4),
+                bottomRight: Radius.circular(20),
+              ),
             ),
-            child: const Icon(
-              Icons.smart_toy_outlined,
-              color: AppColors.primary,
-              size: 23,
+            child: Text(
+              message.text,
+              style: const TextStyle(color: Color(0xFF2D3748), fontSize: 15),
             ),
           ),
+          if (message.recommendedRestaurants != null)
+            ...message.recommendedRestaurants!.expand((restaurant) {
+              return restaurant.menu.map((item) {
+                final qty = cart.getQuantity(item.id);
+                final imageUrl = item.imageUrl ?? '';
 
-          const SizedBox(width: 10),
-
-
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 13,
-                  ),
+                return Container(
+                  margin: const EdgeInsets.only(top: 8),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: AppColors.aiBubble,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(18),
-                      topRight: Radius.circular(18),
-                      bottomRight: Radius.circular(18),
-                      bottomLeft: Radius.circular(5),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.035),
-                        blurRadius: 10,
-                        offset: const Offset(0, 3),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.grey[200]!),
+                  ),
+                  child: Row(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: imageUrl.isNotEmpty
+                            ? Image.network(
+                          imageUrl,
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Container(
+                            width: 60,
+                            height: 60,
+                            color: Colors.grey[200],
+                            child: const Icon(Icons.fastfood, color: Colors.grey),
+                          ),
+                        )
+                            : Container(
+                          width: 60,
+                          height: 60,
+                          color: Colors.grey[200],
+                          child: const Icon(Icons.fastfood, color: Colors.grey),
+                        ),
                       ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              '\$${item.price.toStringAsFixed(2)} • ${restaurant.name}',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (qty == 0)
+                        ElevatedButton(
+                          onPressed: () => cart.addItem(item),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFFF5252),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          child: const Text('+ Add', style: TextStyle(color: Colors.white)),
+                        )
+                      else
+                        Container(
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFF5252).withValues(alpha: 0.12),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.remove, size: 18, color: Color(0xFFFF5252)),
+                                onPressed: () => cart.removeItem(item.id),
+                                constraints: const BoxConstraints(),
+                                padding: const EdgeInsets.all(6),
+                              ),
+                              Text(
+                                '$qty',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFFFF5252),
+                                  fontSize: 14,
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.add, size: 18, color: Color(0xFFFF5252)),
+                                onPressed: () => cart.addItem(item),
+                                constraints: const BoxConstraints(),
+                                padding: const EdgeInsets.all(6),
+                              ),
+                            ],
+                          ),
+                        ),
                     ],
                   ),
-                  child: Text(
-                    message,
-                    style: const TextStyle(
-                      color: AppColors.text,
-                      fontSize: 15,
-                      height: 1.4,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 4),
-
-                Padding(
-                  padding: const EdgeInsets.only(left: 2),
-                  child: Text(
-                    time,
-                    style: const TextStyle(
-                      color: AppColors.secondaryText,
-                      fontSize: 10,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                );
+              });
+            }),
+          const SizedBox(height: 4),
+          Text(
+            message.time,
+            style: TextStyle(color: Colors.grey[500], fontSize: 11),
           ),
         ],
       ),
