@@ -16,9 +16,9 @@ class ZimiAvatar extends StatelessWidget {
       width: size,
       height: size,
       child: Stack(
+        clipBehavior: Clip.none,
         alignment: Alignment.center,
         children: [
-          // Soft circular background
           Container(
             width: size,
             height: size,
@@ -28,135 +28,153 @@ class ZimiAvatar extends StatelessWidget {
             ),
           ),
 
-          // Robot head
           Positioned(
-            top: size * 0.25,
+            top: size * 0.34,
             child: Container(
-              width: size * 0.62,
-              height: size * 0.48,
+              width: size * 0.54,
+              height: size * 0.45,
+
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(size * 0.20),
+
+                borderRadius: BorderRadius.circular(
+                  size * 0.18,
+                ),
+
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.08),
-                    blurRadius: 4,
+                    blurRadius: 5,
                     offset: const Offset(0, 2),
                   ),
                 ],
               ),
 
               child: Stack(
-                alignment: Alignment.center,
                 children: [
                   // Left eye
                   Positioned(
-                    left: size * 0.17,
-                    top: size * 0.17,
+                    left: size * 0.13,
+                    top: size * 0.13,
                     child: _eye(),
                   ),
 
                   // Right eye
                   Positioned(
-                    right: size * 0.17,
-                    top: size * 0.17,
+                    right: size * 0.13,
+                    top: size * 0.13,
                     child: _eye(),
+                  ),
+
+                  Positioned(
+                    left: size * 0.07,
+                    bottom: size * 0.17,
+                    child: _cheek(),
+                  ),
+
+                  Positioned(
+                    right: size * 0.07,
+                    bottom: size * 0.17,
+                    child: _cheek(),
                   ),
 
                   // Smile
                   Positioned(
-                    bottom: size * 0.08,
+                    left: size * 0.21,
+                    right: size * 0.21,
+                    bottom: size * 0.1,
                     child: Container(
-                      width: size * 0.20,
-                      height: size * 0.08,
+                      height: size * 0.9,
+
                       decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
                             color: AppColors.primary,
-                            width: 2,
+                            width: 3,
                           ),
                         ),
-                        borderRadius: BorderRadius.circular(20),
+
+                        borderRadius: BorderRadius.circular(4),
                       ),
                     ),
-                  ),
-
-                  // Cheeks
-                  Positioned(
-                    left: size * 0.08,
-                    bottom: size * 0.12,
-                    child: _cheek(),
-                  ),
-
-                  Positioned(
-                    right: size * 0.08,
-                    bottom: size * 0.12,
-                    child: _cheek(),
                   ),
                 ],
               ),
             ),
           ),
 
-          // Antenna
-          Positioned(
-            top: size * 0.08,
-            child: Column(
-              children: [
-                Container(
-                  width: 2,
-                  height: size * 0.12,
-                  color: Colors.white,
-                ),
-                Container(
-                  width: size * 0.10,
-                  height: size * 0.10,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primary,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ],
-            ),
-          ),
 
-          // Chef hat
           Positioned(
-            top: size * 0.16,
+            top: size * 0.17,
             child: SizedBox(
-              width: size * 0.38,
-              height: size * 0.16,
+              width: size * 0.46,
+              height: size * 0.27,
+
               child: Stack(
+                clipBehavior: Clip.none,
                 children: [
+             
                   Positioned(
-                    left: size * 0.08,
-                    right: size * 0.08,
-                    bottom: 0,
+                    left: size * 0.02,
+                    top: size * 0.02,
+                    child: _hatPuff(size * 0.17),
+                  ),
+
+                  Positioned(
+                    left: size * 0.14,
+                    top: -size * 0.015,
+                    child: _hatPuff(size * 0.20),
+                  ),
+
+                  Positioned(
+                    right: size * 0.02,
+                    top: size * 0.02,
+                    child: _hatPuff(size * 0.17),
+                  ),
+
+                  Positioned(
+                    left: size * 0.07,
+                    right: size * 0.07,
+                    top: size * 0.10,
                     child: Container(
-                      height: size * 0.08,
+                      height: size * 0.14,
+
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(4),
+
+                        borderRadius: BorderRadius.circular(
+                          size * 0.04,
+                        ),
+
+                        border: Border.all(
+                          color: AppColors.primary,
+                          width: 1.2,
+                        ),
                       ),
                     ),
                   ),
 
-                  Positioned(
-                    left: 0,
-                    top: 0,
-                    child: _hatBubble(),
-                  ),
 
                   Positioned(
-                    left: size * 0.10,
-                    top: -size * 0.01,
-                    child: _hatBubble(),
-                  ),
+                    left: size * 0.055,
+                    right: size * 0.055,
+                    bottom: 0,
+                    child: Container(
+                      height: size * 0.08,
 
-                  Positioned(
-                    right: 0,
-                    top: 0,
-                    child: _hatBubble(),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+
+                        borderRadius: BorderRadius.circular(
+                          size * 0.035,
+                        ),
+
+                        border: Border.all(
+                          color: AppColors.primary,
+                          width: 1.2,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -169,8 +187,9 @@ class ZimiAvatar extends StatelessWidget {
 
   Widget _eye() {
     return Container(
-      width: size * 0.10,
-      height: size * 0.10,
+      width: size * 0.085,
+      height: size * 0.085,
+
       decoration: const BoxDecoration(
         color: AppColors.primary,
         shape: BoxShape.circle,
@@ -180,22 +199,29 @@ class ZimiAvatar extends StatelessWidget {
 
   Widget _cheek() {
     return Container(
-      width: size * 0.08,
-      height: size * 0.05,
+      width: size * 0.075,
+      height: size * 0.045,
+
       decoration: BoxDecoration(
-        color: AppColors.primaryLight.withOpacity(0.5),
+        color: AppColors.primaryLight.withOpacity(0.55),
         borderRadius: BorderRadius.circular(20),
       ),
     );
   }
 
-  Widget _hatBubble() {
+  Widget _hatPuff(double diameter) {
     return Container(
-      width: size * 0.14,
-      height: size * 0.14,
-      decoration: const BoxDecoration(
+      width: diameter,
+      height: diameter,
+
+      decoration: BoxDecoration(
         color: Colors.white,
         shape: BoxShape.circle,
+
+        border: Border.all(
+          color: AppColors.primary,
+          width: 1.2,
+        ),
       ),
     );
   }
