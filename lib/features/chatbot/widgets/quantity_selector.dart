@@ -15,68 +15,27 @@ class QuantitySelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 38,
-      decoration: BoxDecoration(
-        color: AppColors.primaryLight,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.25),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: const Icon(Icons.remove_circle_outline),
+          color: AppColors.primary,
+          onPressed: onRemove,
         ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _QuantityButton(
-            icon: Icons.remove,
-            onPressed: onRemove,
+        Text(
+          '$quantity',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
           ),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Text(
-              quantity.toString(),
-              style: const TextStyle(
-                color: AppColors.text,
-                fontSize: 14,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-
-          _QuantityButton(
-            icon: Icons.add,
-            onPressed: onAdd,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _QuantityButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback onPressed;
-
-  const _QuantityButton({
-    required this.icon,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: onPressed,
-      padding: EdgeInsets.zero,
-      constraints: const BoxConstraints(
-        minWidth: 34,
-        minHeight: 34,
-      ),
-      icon: Icon(
-        icon,
-        size: 17,
-        color: AppColors.primary,
-      ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.add_circle),
+          color: AppColors.primary,
+          onPressed: onAdd,
+        ),
+      ],
     );
   }
 }
