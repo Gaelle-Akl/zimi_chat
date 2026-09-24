@@ -287,33 +287,46 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
 
             // Dietary Preference Toggles Bar
+            // Dietary Preference Toggles Bar (Vegan, Dairy-Free, Gluten-Free)
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              color: Colors.grey[100],
-              child: Row(
-                children: [
-                  const Text(
-                    'Filters: ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey,
+              width: double.infinity,
+              color: Colors.red[100],
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Filters: ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  FilterChip(
-                    label: const Text('Vegan'),
-                    selected: userPrefs.isVegetarian,
-                    onSelected: (_) => userPrefs.toggleVegetarian(),
-                    selectedColor: AppColors.primary.withAlpha(50),
-                  ),
-                  const SizedBox(width: 8),
-                  FilterChip(
-                    label: const Text('Dairy-Free'),
-                    selected: userPrefs.isDairyFree,
-                    onSelected: (_) => userPrefs.toggleDairyFree(),
-                    selectedColor: AppColors.primary.withAlpha(50),
-                  ),
-                ],
+                    const SizedBox(width: 8),
+                    FilterChip(
+                      label: const Text('Vegan'),
+                      selected: userPrefs.isVegetarian,
+                      onSelected: (_) => userPrefs.toggleVegetarian(),
+                      selectedColor: AppColors.primary.withAlpha(50),
+                    ),
+                    const SizedBox(width: 8),
+                    FilterChip(
+                      label: const Text('Dairy-Free'),
+                      selected: userPrefs.isDairyFree,
+                      onSelected: (_) => userPrefs.toggleDairyFree(),
+                      selectedColor: AppColors.primary.withAlpha(50),
+                    ),
+                    const SizedBox(width: 8),
+                    FilterChip(
+                      label: const Text('Gluten-Free'),
+                      selected: userPrefs.isGlutenFree,
+                      onSelected: (_) => userPrefs.toggleGlutenFree(),
+                      selectedColor: AppColors.primary.withAlpha(50),
+                    ),
+                  ],
+                ),
               ),
             ),
 

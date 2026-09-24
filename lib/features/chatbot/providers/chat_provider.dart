@@ -22,7 +22,6 @@ class ChatProvider with ChangeNotifier {
   List<ChatMessage> get messages => _messages;
   bool get isLoading => _isLoading;
 
-  // Clear messages method placed properly as a class method
   void clearMessages() {
     _messages.clear();
     notifyListeners();
@@ -31,15 +30,12 @@ class ChatProvider with ChangeNotifier {
   void sendMessage(String text, UserPreferencesProvider userPrefs) async {
     if (text.trim().isEmpty) return;
 
-    // 1. Add User Message
     _messages.add(ChatMessage(text: text, isUser: true));
     _isLoading = true;
     notifyListeners();
 
-    // Simulate brief bot processing delay
     await Future.delayed(const Duration(milliseconds: 600));
 
-    // 2. Identify Category from Input
     final lowerText = text.toLowerCase();
     String detectedCategory = '';
 
@@ -53,16 +49,14 @@ class ChatProvider with ChangeNotifier {
       detectedCategory = 'ice cream';
     }
 
-    // 3. Process Response
     if (detectedCategory.isNotEmpty) {
-      // Filter restaurants matching category and apply active preferences
       final filteredList = mockRestaurants.where((rest) {
         if (rest.category != detectedCategory) return false;
 
-        // Ensure restaurant has at least 1 menu item matching active filters
         final hasMatchingItems = rest.menu.any((item) {
           if (userPrefs.isVegetarian && !item.isVegan) return false;
           if (userPrefs.isDairyFree && !item.isDairyFree) return false;
+          if (userPrefs.isGlutenFree && !item.isGlutenFree) return false;
           return true;
         });
 
@@ -71,13 +65,13 @@ class ChatProvider with ChangeNotifier {
 
       if (filteredList.isNotEmpty) {
         String filterNotice = '';
-        if (userPrefs.isVegetarian) filterNotice += ' (Vegan filtered)';
-        if (userPrefs.isDairyFree) filterNotice += ' (Dairy-Free filtered)';
+        if (userPrefs.isVegetarian) filterNotice += ' (Vegan)';
+        if (userPrefs.isDairyFree) filterNotice += ' (Dairy-Free)';
+        if (userPrefs.isGlutenFree) filterNotice += ' (Gluten-Free)';
 
         _messages.add(
           ChatMessage(
-            text:
-            'Here are top Lebanese places for $detectedCategory$filterNotice:',
+            text: 'Here are top spots for $detectedCategory$filterNotice:',
             isUser: false,
             recommendedRestaurants: filteredList,
           ),
@@ -95,7 +89,7 @@ class ChatProvider with ChangeNotifier {
       _messages.add(
         ChatMessage(
           text:
-          'I can help you find Lebanese spots! Try asking for "pizza", "burgers", or "ice cream".',
+          'Hello , I will be your assitant today! \ I can help you find spots! Try asking for "pizza", "burgers", or "ice cream".',
           isUser: false,
         ),
       );
