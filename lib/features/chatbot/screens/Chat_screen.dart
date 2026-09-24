@@ -3,6 +3,10 @@ import '../../../app/theme/app_colors.dart';
 import '../widgets/chat_header.dart';
 import '../models/chat_message.dart';
 import '../models/chat_message_model.dart';
+import '../widgets/quick_actions.dart';
+import '../widgets/chat_input_bar.dart';
+
+import '../widgets/delivery_status_card.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -38,35 +42,52 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-
       body: SafeArea(
         child: Column(
           children: [
-            
             const ChatHeader(),
-              
-            // Chat content will go here
             Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.only(
-                  top: 18,
-                  bottom:20,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
                 ),
-                
-                itemCount: messages.length,
-
-                itemBuilder: (context, index) {
-                  return ChatMessage(
-                    message: messages[index],
-                  );
-                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    QuickActions(
+                      onFindFood: () {
+                        debugPrint('Find food pressed');
+                      },
+                      onTrackOrder: () {
+                        debugPrint('Track order pressed');
+                      },
+                      onPopular: () {
+                        debugPrint('Popular near me pressed');
+                      },
+                      onDeals: () {
+                        debugPrint('Deals pressed');
+                      },
+                      onHelp: () {
+                        debugPrint('Help pressed');
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-
-            // Input bar will go here
-            Container(
-              height: 20,
-              color: Colors.white,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                20,
+                8,
+                20,
+                16,
+              ),
+              child: ChatInputBar(
+                onSend: (message) {
+                  debugPrint('Message sent: $message');
+                },
+              ),
             ),
           ],
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../app/theme/app_colors.dart';
 import '../models/chat_message_model.dart';
+import  '../widgets/zimi_avatar.dart';
 
 class ChatMessage extends StatelessWidget {
   final ChatMessageModel message;
@@ -107,20 +108,9 @@ class ChatMessage extends StatelessWidget {
   }
 
   Widget _buildBotAvatar() {
-    return Container(
-      width: 38,
-      height: 38,
-
-      decoration: BoxDecoration(
-        color: AppColors.primaryLight.withOpacity(0.25),
-        shape: BoxShape.circle,
-      ),
-
-      child: const Icon(
-        Icons.smart_toy_outlined,
-        color: AppColors.primary,
-        size: 23,
-      ),
+    return const ZimiAvatar(
+      size: 38,
     );
+  
   }
 }

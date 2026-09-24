@@ -7,8 +7,8 @@ class AppColors {
   static const primaryLight = Color(0xFFFF8A83);
 
   // Background
-  static const background = Color(0xFFFFF9F8);
-  static const surface = Color(0xFFFFFFFF);
+  static const background = Color(0xFFFFF7F6);
+  static const surface = Color(0xFFFFFEFE);
   
 
   // Text
@@ -26,4 +26,6 @@ class AppColors {
   static const success = Color(0xFF70D69B);
   static const warning = Color(0xFFF2B84B);
   static const error = Color(0xFFE66A6A);
+
+  static const light = Color(0xF3CFCE);
 }
