@@ -199,14 +199,16 @@ class ChatProvider extends ChangeNotifier {
     }
   }
 
-  // Accepts CartProvider to reset order tracking when chat is cleared
   void clearMessages([CartProvider? cart]) {
     _messages.clear();
     _lastQueryText = '';
     _userQueriedCategories.clear();
+
+    // Clears active order tracking state on refresh
     if (cart != null) {
       cart.resetOrder();
     }
+
     notifyListeners();
   }
 
