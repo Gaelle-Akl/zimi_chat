@@ -5,7 +5,7 @@ import 'app/theme/app_theme.dart';
 import 'features/chatbot/providers/cart_provider.dart';
 import 'features/chatbot/providers/chat_provider.dart';
 import 'features/chatbot/providers/user_preferences_provider.dart';
-import 'features/chatbot/screens/chat_screen.dart';
+import 'package:zimi_chatbot/features/chatbot/screens/chat_screen.dart';
 
 void main() {
   runApp(

@@ -24,7 +24,7 @@ class ZimiAvatar extends StatelessWidget {
             height: size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.white.withOpacity(0.28),
+              color: Colors.white.withValues(alpha: 0.28),
             ),
           ),
 
@@ -43,7 +43,7 @@ class ZimiAvatar extends StatelessWidget {
 
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
+                    color: Colors.black.withValues(alpha: 0.08),
                     blurRadius: 5,
                     offset: const Offset(0, 2),
                   ),
@@ -203,7 +203,7 @@ class ZimiAvatar extends StatelessWidget {
       height: size * 0.045,
 
       decoration: BoxDecoration(
-        color: AppColors.primaryLight.withOpacity(0.55),
+        color: AppColors.primaryLight.withValues(alpha: 0.55),
         borderRadius: BorderRadius.circular(20),
       ),
     );

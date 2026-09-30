@@ -1,23 +1,37 @@
-import '../models/restaurant_model.dart';
+class MenuItemModel {
+  final String id;
+  final String name;
+  final String category;
+  final double price;
+  final String description;
+  final String imageUrl;
+  final bool isVegan;
+  final bool isGlutenFree;
+  final bool isDairyFree;
+
+  MenuItemModel({
+    required this.id,
+    required this.name,
+    required this.category,
+    required this.price,
+    required this.description,
+    required this.imageUrl,
+    this.isVegan = false,
+    this.isGlutenFree = false,
+    this.isDairyFree = false,
+  });
+}
 
 class ChatMessageModel {
   final String text;
   final bool isUser;
-  final String time;
-  final List<Restaurant>? recommendedRestaurants;
+  final String? timestamp;
+  final List<MenuItemModel>? menuItems;
 
   ChatMessageModel({
     required this.text,
     required this.isUser,
-    String? time,
-    this.recommendedRestaurants,
-  }) : time = time ?? _getCurrentTime();
-
-  static String _getCurrentTime() {
-    final now = DateTime.now();
-    final hour = now.hour == 0 ? 12 : (now.hour > 12 ? now.hour - 12 : now.hour);
-    final minute = now.minute.toString().padLeft(2, '0');
-    final period = now.hour >= 12 ? 'PM' : 'AM';
-    return '$hour:$minute $period';
-  }
+    this.timestamp,
+    this.menuItems,
+  });
 }

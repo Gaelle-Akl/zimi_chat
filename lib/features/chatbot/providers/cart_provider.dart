@@ -17,7 +17,7 @@ class CartItem {
 class CartProvider extends ChangeNotifier {
   final List<CartItem> _items = [];
 
-  // Default values MUST start empty / false
+  // Default values start empty / false
   bool _hasActiveOrder = false;
   String _activeOrderId = '';
   String _activeOrderStatus = '';
@@ -28,7 +28,6 @@ class CartProvider extends ChangeNotifier {
   bool get hasActiveOrder => _hasActiveOrder;
   String get activeOrderId => _activeOrderId;
 
-  // Custom status check
   String get activeOrderStatus {
     if (!_hasActiveOrder) return '';
     return _activeOrderStatus.isEmpty
@@ -105,15 +104,13 @@ class CartProvider extends ChangeNotifier {
   void checkout() {
     if (_items.isNotEmpty) {
       _hasActiveOrder = true;
-      _activeOrderId = (1000 + (DateTime.now().millisecondsSinceEpoch % 8999)).toString();
+      _activeOrderId =
+          (1000 + (DateTime.now().millisecondsSinceEpoch % 8999)).toString();
       _activeOrderStatus = 'Your food is being prepared 🍳';
       _items.clear();
       notifyListeners();
     }
   }
-
-  // Force reset active order state completely
-  // Inside CartProvider class in lib/features/chatbot/providers/cart_provider.dart
 
   void resetOrder() {
     _hasActiveOrder = false;
