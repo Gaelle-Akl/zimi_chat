@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../app/theme/app_colors.dart';
-import '../providers/chat_provider.dart';
-import '../providers/user_preferences_provider.dart';
 import '../providers/cart_provider.dart';
-import '../widgets/chat_header.dart';
-import '../widgets/quick_actions.dart';
-import '../widgets/chat_input_bar.dart';
+import '../providers/chat_provider.dart';
+import '../providers/language_provider.dart';
+import '../providers/user_preferences_provider.dart';
 import '../widgets/ai_message_bubble.dart';
+import '../widgets/chat_header.dart';
+import '../widgets/chat_input_bar.dart';
+import '../widgets/quick_actions.dart';
 import '../widgets/user_message_bubble.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -45,13 +46,16 @@ class _ChatScreenState extends State<ChatScreen> {
     final chatProvider = Provider.of<ChatProvider>(context, listen: false);
     final prefsProvider = Provider.of<UserPreferencesProvider>(context, listen: false);
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    final langProvider = Provider.of<LanguageProvider>(context, listen: false);
 
-    chatProvider.sendMessage(text, prefsProvider, cartProvider);
+    chatProvider.sendMessage(text, prefsProvider, cartProvider, langProvider);
     _scrollToBottom();
   }
 
   @override
   Widget build(BuildContext context) {
+    final langProvider = Provider.of<LanguageProvider>(context);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -66,7 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     final cart = Provider.of<CartProvider>(context, listen: false);
                     cart.resetOrder();
                     cart.clearCart();
-                    Provider.of<ChatProvider>(context, listen: false).clearMessages(cart);
+                    Provider.of<ChatProvider>(context, listen: false).clearMessages(cart, langProvider.currentLanguage);
                   },
                 ),
 
@@ -80,32 +84,32 @@ class _ChatScreenState extends State<ChatScreen> {
                         child: Row(
                           children: [
                             FilterChip(
-                              label: const Text('Vegan'),
+                              label: Text(langProvider.translate('filter_vegan')),
                               selected: prefs.isVegan,
                               onSelected: (_) {
                                 prefs.toggleVegan();
                                 Provider.of<ChatProvider>(context, listen: false)
-                                    .updateFilterResults(prefs, Provider.of<CartProvider>(context, listen: false));
+                                    .updateFilterResults(prefs, Provider.of<CartProvider>(context, listen: false), langProvider);
                               },
                             ),
                             const SizedBox(width: 8),
                             FilterChip(
-                              label: const Text('Gluten-Free'),
+                              label: Text(langProvider.translate('filter_gluten_free')),
                               selected: prefs.isGlutenFree,
                               onSelected: (_) {
                                 prefs.toggleGlutenFree();
                                 Provider.of<ChatProvider>(context, listen: false)
-                                    .updateFilterResults(prefs, Provider.of<CartProvider>(context, listen: false));
+                                    .updateFilterResults(prefs, Provider.of<CartProvider>(context, listen: false), langProvider);
                               },
                             ),
                             const SizedBox(width: 8),
                             FilterChip(
-                              label: const Text('Dairy-Free'),
+                              label: Text(langProvider.translate('filter_dairy_free')),
                               selected: prefs.isDairyFree,
                               onSelected: (_) {
                                 prefs.toggleDairyFree();
                                 Provider.of<ChatProvider>(context, listen: false)
-                                    .updateFilterResults(prefs, Provider.of<CartProvider>(context, listen: false));
+                                    .updateFilterResults(prefs, Provider.of<CartProvider>(context, listen: false), langProvider);
                               },
                             ),
                           ],
@@ -180,9 +184,9 @@ class _ChatScreenState extends State<ChatScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Text(
-                                'Cart Total',
-                                style: TextStyle(
+                              Text(
+                                langProvider.translate('cart_total'),
+                                style: const TextStyle(
                                   color: Colors.white70,
                                   fontSize: 12,
                                 ),
@@ -211,12 +215,15 @@ class _ChatScreenState extends State<ChatScreen> {
                               cart.checkout();
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('Order placed successfully! ID: #${cart.activeOrderId}'),
+                                  content: Text('${langProvider.translate('order_placed_success')} #${cart.activeOrderId}'),
                                   backgroundColor: Colors.green,
                                 ),
                               );
                             },
-                            child: const Text('Checkout', style: TextStyle(fontWeight: FontWeight.bold)),
+                            child: Text(
+                              langProvider.translate('checkout'),
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ],
                       ),
@@ -237,7 +244,11 @@ class _ChatScreenState extends State<ChatScreen> {
                           });
                         },
                         icon: Icon(_showQuickActions ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up),
-                        label: Text(_showQuickActions ? "Hide Options" : "Show Options"),
+                        label: Text(
+                          _showQuickActions
+                              ? langProvider.translate('hide_options')
+                              : langProvider.translate('show_options'),
+                        ),
                       ),
                     ),
                   ],
@@ -246,11 +257,11 @@ class _ChatScreenState extends State<ChatScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: QuickActions(
-                      onFindFood: () => _sendMessage(context, 'Find me some food'),
-                      onTrackOrder: () => _sendMessage(context, 'Track my order'),
-                      onPopular: () => _sendMessage(context, 'What is popular near me?'),
-                      onDeals: () => _sendMessage(context, 'Show me today’s deals'),
-                      onHelp: () => _sendMessage(context, 'I need help'),
+                      onFindFood: () => _sendMessage(context, langProvider.translate('prompt_find_food')),
+                      onTrackOrder: () => _sendMessage(context, langProvider.translate('prompt_track_order')),
+                      onPopular: () => _sendMessage(context, langProvider.translate('prompt_popular')),
+                      onDeals: () => _sendMessage(context, langProvider.translate('prompt_deals')),
+                      onHelp: () => _sendMessage(context, langProvider.translate('prompt_help')),
                     ),
                   ),
 

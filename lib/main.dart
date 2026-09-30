@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'app/theme/app_theme.dart';
 import 'features/chatbot/providers/cart_provider.dart';
 import 'features/chatbot/providers/chat_provider.dart';
+import 'features/chatbot/providers/language_provider.dart';
 import 'features/chatbot/providers/user_preferences_provider.dart';
 import 'package:zimi_chatbot/features/chatbot/screens/chat_screen.dart';
 
@@ -14,6 +15,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => ChatProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => UserPreferencesProvider()),
+        ChangeNotifierProvider(create: (_) => LanguageProvider()),
       ],
       child: const ZimiApp(),
     ),

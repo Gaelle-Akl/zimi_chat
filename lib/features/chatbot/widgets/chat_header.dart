@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/language_provider.dart';
 import '../widgets/zimi_avatar.dart';
 
 class ChatHeader extends StatelessWidget {
@@ -14,6 +16,8 @@ class ChatHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final langProvider = Provider.of<LanguageProvider>(context);
+
     return ClipPath(
       clipper: HeaderWaveClipper(),
       child: Container(
@@ -103,24 +107,24 @@ class ChatHeader extends StatelessWidget {
 
                     const SizedBox(width: 14),
 
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Zimi Assistant',
-                            style: TextStyle(
+                            langProvider.translate('title'),
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
                               letterSpacing: -0.3,
                             ),
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Text(
-                            'Your food companion',
-                            style: TextStyle(
+                            langProvider.translate('subtitle'),
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
@@ -148,17 +152,54 @@ class ChatHeader extends StatelessWidget {
                       onSelected: (value) {
                         if (value == 'refresh' && onRefresh != null) {
                           onRefresh!();
+                        } else if (value.startsWith('lang_')) {
+                          final selectedLang = value.replaceFirst('lang_', '');
+                          langProvider.setLanguage(selectedLang);
                         }
                       },
                       itemBuilder: (context) => [
-                        const PopupMenuItem<String>(
+                        PopupMenuItem<String>(
                           value: 'refresh',
                           child: Row(
                             children: [
-                              Icon(Icons.refresh, color: Colors.black87, size: 20),
-                              SizedBox(width: 8),
-                              Text('Refresh Chat'),
+                              const Icon(Icons.refresh, color: Colors.black87, size: 20),
+                              const SizedBox(width: 8),
+                              Text(langProvider.translate('refresh')),
                             ],
+                          ),
+                        ),
+                        const PopupMenuDivider(),
+                        PopupMenuItem<String>(
+                          value: 'lang_en',
+                          child: Text(
+                            '🇬🇧 English',
+                            style: TextStyle(
+                              fontWeight: langProvider.currentLanguage == 'en'
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                        PopupMenuItem<String>(
+                          value: 'lang_fr',
+                          child: Text(
+                            '🇫🇷 Français',
+                            style: TextStyle(
+                              fontWeight: langProvider.currentLanguage == 'fr'
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                        PopupMenuItem<String>(
+                          value: 'lang_ar',
+                          child: Text(
+                            '🇸🇦 العربية',
+                            style: TextStyle(
+                              fontWeight: langProvider.currentLanguage == 'ar'
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
                           ),
                         ),
                       ],

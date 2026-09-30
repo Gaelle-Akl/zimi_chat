@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/language_provider.dart';
 
 class QuickActions extends StatelessWidget {
   final VoidCallback onFindFood;
@@ -65,6 +68,8 @@ class QuickActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final langProvider = Provider.of<LanguageProvider>(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -73,7 +78,7 @@ class QuickActions extends StatelessWidget {
             Expanded(
               child: _buildOutlinedButton(
                 icon: Icons.restaurant,
-                label: 'Find food',
+                label: langProvider.translate('action_find_food'),
                 onTap: onFindFood,
               ),
             ),
@@ -81,7 +86,7 @@ class QuickActions extends StatelessWidget {
             Expanded(
               child: _buildOutlinedButton(
                 icon: Icons.location_on,
-                label: 'Track order',
+                label: langProvider.translate('action_track_order'),
                 onTap: onTrackOrder,
               ),
             ),
@@ -93,7 +98,7 @@ class QuickActions extends StatelessWidget {
             Expanded(
               child: _buildOutlinedButton(
                 icon: Icons.local_fire_department,
-                label: 'Popular near me',
+                label: langProvider.translate('action_popular'),
                 onTap: onPopular,
               ),
             ),
@@ -101,7 +106,7 @@ class QuickActions extends StatelessWidget {
             Expanded(
               child: _buildOutlinedButton(
                 icon: Icons.local_offer,
-                label: 'Deals & offers',
+                label: langProvider.translate('action_deals'),
                 onTap: onDeals,
               ),
             ),
@@ -112,7 +117,7 @@ class QuickActions extends StatelessWidget {
           width: MediaQuery.of(context).size.width * 0.42,
           child: _buildOutlinedButton(
             icon: Icons.help_outline,
-            label: 'Need help',
+            label: langProvider.translate('action_help'),
             onTap: onHelp,
           ),
         ),
