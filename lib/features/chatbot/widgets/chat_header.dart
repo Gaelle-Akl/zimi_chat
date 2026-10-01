@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import "../../../app/theme/app_colors.dart";
 
+import '../../../app/theme/app_colors.dart';
 import '../widgets/zimi_avatar.dart';
 
 class ChatHeader extends StatelessWidget {
@@ -10,23 +10,23 @@ class ChatHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipPath(
       clipper: HeaderWaveClipper(),
-
       child: Container(
         height: 170,
         width: double.infinity,
 
+        // More visible Zimi coral gradient
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-
             colors: [
-              Color(0xFFFF625A),
-              Color(0xFFFF4745),
+              Color(0xFFFF6B67),
+              Color(0xFFFF5552),
+              Color(0xFFFF3F48),
             ],
-
             stops: [
               0.0,
+              0.55,
               1.0,
             ],
           ),
@@ -34,15 +34,18 @@ class ChatHeader extends StatelessWidget {
 
         child: Stack(
           children: [
+            // ─────────────────────────────
+            // Decorative circles
+            // ─────────────────────────────
+
             Positioned(
               left: -40,
               top: 15,
               child: Container(
                 width: 120,
                 height: 120,
-
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.055),
+                  color: Colors.white.withOpacity(0.07),
                   shape: BoxShape.circle,
                 ),
               ),
@@ -54,9 +57,8 @@ class ChatHeader extends StatelessWidget {
               child: Container(
                 width: 100,
                 height: 100,
-
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.045),
+                  color: Colors.white.withOpacity(0.06),
                   shape: BoxShape.circle,
                 ),
               ),
@@ -68,39 +70,41 @@ class ChatHeader extends StatelessWidget {
               child: Container(
                 width: 90,
                 height: 90,
-
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.10),
+                  color: Colors.white.withOpacity(0.11),
                   shape: BoxShape.circle,
                 ),
               ),
             ),
 
+            // ─────────────────────────────
+            // Header content
+            // ─────────────────────────────
 
             SafeArea(
               bottom: false,
-
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
+                  horizontal: 18,
                   vertical: 10,
                 ),
-
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
-
                   children: [
+                    // ─────────────────────
+                    // BACK BUTTON
+                    // ─────────────────────
+
                     SizedBox(
                       width: 42,
                       height: 48,
-
                       child: IconButton(
                         padding: EdgeInsets.zero,
-
-                        onPressed: () {},
-
+                        onPressed: () {
+                          Navigator.of(context).maybePop();
+                        },
                         icon: const Icon(
-                          Icons.arrow_back_ios_new_rounded,
+                          Icons.arrow_back_ios_new,
                           color: Colors.white,
                           size: 22,
                         ),
@@ -109,22 +113,27 @@ class ChatHeader extends StatelessWidget {
 
                     const SizedBox(width: 5),
 
-                    // Zimi
+                    // ─────────────────────
+                    // CUSTOM ZIMI AVATAR
+                    // ─────────────────────
+
                     const ZimiAvatar(
                       size: 60,
                     ),
 
                     const SizedBox(width: 14),
 
+                    // ─────────────────────
+                    // TITLE
+                    // ─────────────────────
+
                     const Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
-
                         children: [
                           Text(
                             'Zimi Assistant',
-
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -132,12 +141,9 @@ class ChatHeader extends StatelessWidget {
                               letterSpacing: -0.3,
                             ),
                           ),
-
                           SizedBox(height: 5),
-
                           Text(
                             'Your food companion',
-
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 13,
@@ -148,20 +154,67 @@ class ChatHeader extends StatelessWidget {
                       ),
                     ),
 
-            
+                    // ─────────────────────
+                    // THREE-DOT MENU
+                    // ─────────────────────
+
                     Container(
                       width: 46,
                       height: 46,
-
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.18),
                         shape: BoxShape.circle,
                       ),
+                      child: PopupMenuButton<String>(
+                        padding: EdgeInsets.zero,
+                        tooltip: 'More options',
+                        icon: const Icon(
+                          Icons.more_horiz_rounded,
+                          color: Colors.white,
+                          size: 25,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        onSelected: (value) {
+                          switch (value) {
+                            case 'clear':
+                              debugPrint('Clear chat selected');
+                              break;
 
-                      child: const Icon(
-                        Icons.more_horiz_rounded,
-                        color: Colors.white,
-                        size: 25,
+                            case 'help':
+                              debugPrint('Help selected');
+                              break;
+                          }
+                        },
+                        itemBuilder: (context) => const [
+                          PopupMenuItem<String>(
+                            value: 'clear',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.delete_outline,
+                                  size: 20,
+                                ),
+                                SizedBox(width: 10),
+                                Text('Clear chat'),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem<String>(
+                            value: 'help',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.help_outline,
+                                  size: 20,
+                                ),
+                                SizedBox(width: 10),
+                                Text('Help'),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -175,6 +228,9 @@ class ChatHeader extends StatelessWidget {
   }
 }
 
+// ─────────────────────────────────────
+// HEADER WAVE
+// ─────────────────────────────────────
 
 class HeaderWaveClipper extends CustomClipper<Path> {
   @override
