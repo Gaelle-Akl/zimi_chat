@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../app/theme/app_colors.dart';
+import '../widgets/zimi_avatar.dart';
 
 class AiMessageBubble extends StatelessWidget {
   final String message;
@@ -30,10 +31,11 @@ class AiMessageBubble extends StatelessWidget {
               color: AppColors.primaryLight,
               shape: BoxShape.circle,
             ),
-            child: const Icon(
-              Icons.smart_toy_outlined,
-              color: AppColors.primary,
-              size: 23,
+          child: ClipOval(
+              child: ZimiAvatar(
+              
+                size: 42,
+              ),
             ),
           ),
 
