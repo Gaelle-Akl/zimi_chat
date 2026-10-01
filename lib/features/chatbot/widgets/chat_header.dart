@@ -14,7 +14,6 @@ class ChatHeader extends StatelessWidget {
         height: 170,
         width: double.infinity,
 
-        // More visible Zimi coral gradient
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -34,9 +33,6 @@ class ChatHeader extends StatelessWidget {
 
         child: Stack(
           children: [
-            // ─────────────────────────────
-            // Decorative circles
-            // ─────────────────────────────
 
             Positioned(
               left: -40,
@@ -77,10 +73,6 @@ class ChatHeader extends StatelessWidget {
               ),
             ),
 
-            // ─────────────────────────────
-            // Header content
-            // ─────────────────────────────
-
             SafeArea(
               bottom: false,
               child: Padding(
@@ -91,9 +83,7 @@ class ChatHeader extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // ─────────────────────
-                    // BACK BUTTON
-                    // ─────────────────────
+
 
                     SizedBox(
                       width: 42,
@@ -113,19 +103,12 @@ class ChatHeader extends StatelessWidget {
 
                     const SizedBox(width: 5),
 
-                    // ─────────────────────
-                    // CUSTOM ZIMI AVATAR
-                    // ─────────────────────
-
                     const ZimiAvatar(
                       size: 60,
                     ),
 
                     const SizedBox(width: 14),
 
-                    // ─────────────────────
-                    // TITLE
-                    // ─────────────────────
 
                     const Expanded(
                       child: Column(
@@ -154,9 +137,6 @@ class ChatHeader extends StatelessWidget {
                       ),
                     ),
 
-                    // ─────────────────────
-                    // THREE-DOT MENU
-                    // ─────────────────────
 
                     Container(
                       width: 46,
@@ -181,9 +161,11 @@ class ChatHeader extends StatelessWidget {
                             case 'clear':
                               debugPrint('Clear chat selected');
                               break;
-
                             case 'help':
                               debugPrint('Help selected');
+                              break;
+                            case 'languages':
+                              debugPrint('Languages selected');
                               break;
                           }
                         },
@@ -198,6 +180,19 @@ class ChatHeader extends StatelessWidget {
                                 ),
                                 SizedBox(width: 10),
                                 Text('Clear chat'),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem<String>(
+                            value: 'Languages',
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.language_outlined,
+                                  size: 20,
+                                ),
+                                SizedBox(width: 10),
+                                Text('Switch Languages'),
                               ],
                             ),
                           ),
@@ -227,11 +222,6 @@ class ChatHeader extends StatelessWidget {
     );
   }
 }
-
-// ─────────────────────────────────────
-// HEADER WAVE
-// ─────────────────────────────────────
-
 class HeaderWaveClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
